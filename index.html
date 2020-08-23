@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+<head>
+    <title>COVID-19 Real Time Update</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <link rel="shortcut icon" href="./icon.png"/>
+
+  </head>
+  <body style="background-color: rgb(23, 34, 61);" onload="fetch()">
+    <section class="coronaUpdate container-fluid">
+        <div class="mb-5" style="background-color: darkgray;">
+            <h1 class="text-center text-uppercase" style="color: rgb(68, 53, 32);">C<img src="./virus.png" style="height: 50px;width: 50px ;">VID-19 Update</h1>
+        </div>
+        
+        <div class="continer" style=" padding-left: 2px;">
+        <ul >
+            <h3 id="heading1" style="color:rgba(255,217,0);" class="my-2">
+                
+            </h3>
+          
+            <h3 id="heading2" style="color:rgb(221, 65, 26); " class="my-2">
+                
+            </h3>
+        
+        
+            <h3 id="heading3" style="color:#32CD32; " class="my-2">
+                
+            </h3>
+            
+            <h3 id="heading4" style="color:rgb(228, 133, 43);" class="my-2">
+                
+            </h3>
+
+           <!-- <h3 id="heading5" style="color:#32CD32;" class="my-2">
+                
+            </h3>
+
+            <h3 id="heading6" style="color:#DC143C;" class="my-2">
+                
+            </h3>-->
+        </ul>
+    </div>
+    <div>
+
+    </div>
+    <div>
+
+        <h4 style="float:left;"><a href="./world.html">Back To Global Data</a></h4>
+          <h5 id="time" style="color: rgb(190, 199, 151); float: right;"></h5>  
+    </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped text-center" id="tval">
+                <tr class="bg-info">
+                    <th>Last Updated</th>
+                    <th>State</th>
+                    <th>Total Confirmed</th>
+                    <th>Total Deaths</th>
+                    <th>Recovered</th>
+                    <th>Active Cases</th>
+                </tr>
+
+            </table>
+        </div>
+    </section>
+    <script>
+        function fetch()
+        {
+            $.get("https://api.covid19india.org/data.json",
+            function (data){
+                //console.log(data['countries'].length);
+                
+                var time = document.getElementById("time");
+                time.innerHTML ="Last Updated on : "+ data['statewise'][0]['lastupdatedtime'];
+
+                var heading1 = document.getElementById("heading1");
+                heading1.innerHTML = " Total Confirmed Cases = " + data['statewise'][0]['confirmed'] ;
+                
+                var heading2 = document.getElementById("heading2");
+				heading2.innerHTML = " Total Deaths = "+ data['statewise'][0]['deaths'];
+
+                var heading3 = document.getElementById("heading3");
+				heading3.innerHTML = " Total Recovered = "+ data['statewise'][0]['recovered'];
+
+                var heading4 = document.getElementById("heading4");
+				heading4.innerHTML = " Active Cases = "+ data['statewise'][0]['active'];
+
+                var tval = document.getElementById('tval');
+                for(var i =1; i<=data['statewise'].length; i++)
+                {
+                    var x = tval.insertRow();
+                    x.insertCell(0);
+                    tval.rows[i].cells[0].innerHTML = data['statewise'][i]['lastupdatedtime'];
+                    tval.rows[i].cells[0].style.background = 'rgb(23, 34, 61);';
+                    tval.rows[i].cells[0].style.color = '#fff';
+                    tval.rows[i].cells[0].style.fontWeight = '500';
+
+                    x.insertCell(1);
+                   tval.rows[i].cells[1].innerHTML = data['statewise'][i]['state'];
+                    tval.rows[i].cells[1].style.background = 'rgb(23,34,61)';
+                    tval.rows[i].cells[1].style.fontWeight = '500';
+                    tval.rows[i].cells[1].style.color = '#fff';
+
+                    x.insertCell(2);
+                    tval.rows[i].cells[2].innerHTML = data['statewise'][i]['confirmed'];
+                    tval.rows[i].cells[2].style.background = 'rgba(255,217,0)';
+                    tval.rows[i].cells[2].style.fontWeight = '700';
+                        
+                    x.insertCell(3);
+                    tval.rows[i].cells[3].innerHTML = data['statewise'][i]['deaths'];
+                    tval.rows[i].cells[3].style.background = '#DC143C';
+                    tval.rows[i].cells[3].style.fontWeight = '700';
+
+                    x.insertCell(4);
+                    tval.rows[i].cells[4].innerHTML = data['statewise'][i]['recovered'];
+                    tval.rows[i].cells[4].style.background = '#32CD32';
+                    tval.rows[i].cells[4].style.fontWeight = '700';
+
+                    x.insertCell(5);
+                    tval.rows[i].cells[5].innerHTML = data['statewise'][i]['active'];
+                    tval.rows[i].cells[5].style.background = 'rgb(255, 217, 0)';
+                    tval.rows[i].cells[5].style.fontWeight = '700';
+
+
+                  /*  x.insertCell(6);
+                    tval.rows[i].cells[6].innerHTML = data['statewise'][i-1]['NewDeaths'];
+                    tval.rows[i].cells[6].style.background = '#DC143C';
+                    tval.rows[i].cells[6].style.fontWeight = '700';*/
+                }
+
+                var totalCase=0;
+                var TotalDeaths=0;
+                /*for(var i =1; i<=data['statewise'].length; i++)
+                {
+                    totalCase += data['statewise'][i]['confirmed'];
+                    TotalDeaths += data['statewise'][i]['deaths'];
+
+                }*/
+                
+
+               /* var heading2 = document.getElementById("heading2");
+                heading2.innerHTML = " Total Recovered = "+ data['Global']['TotalRecovered'];
+
+                
+
+                var heading4 = document.getElementById("heading4");
+				heading4.innerHTML = " New Cases = " + data['Global']['NewConfirmed'];
+
+                var heading5 = document.getElementById("heading5");
+                heading5.innerHTML = " New Recovered = " + data['Global']['NewRecovered'];
+
+                var heading6 = document.getElementById("heading6");
+                heading6.innerHTML = " New Deaths = " + data['Global']['NewDeaths'];*/
+            }
+            )
+
+           /* $.get("https://api.covid19api.com/summary",
+            function (data)
+            {
+
+            }        
+            )*/
+        }
+    </script>
+    </body>
+  </html
